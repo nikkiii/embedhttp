@@ -58,9 +58,9 @@ public class MultipartReader {
 	 * 			If an error occurs
 	 */
 	public int read() throws IOException {
-		if(leftover != null && leftover.remaining() > 0) {
+		if (leftover != null && leftover.remaining() > 0) {
 			int b = leftover.get();
-			if(leftover.remaining() == 0) {
+			if (leftover.remaining() == 0) {
 				leftover = null;
 			}
 			return b;
@@ -91,7 +91,7 @@ public class MultipartReader {
             return 0;
         }
         
-        if(ignoreNextRead) {
+        if (ignoreNextRead) {
         	ignoreNextRead = false;
         	return -1;
         }
@@ -112,9 +112,9 @@ public class MultipartReader {
                 }
                 b[off + i] = (byte)c;
                 //Verify that we aren't reading into our boundary
-                if(b[off + i] == boundaryBytes[count]) {
+                if (b[off + i] == boundaryBytes[count]) {
                 	count++;
-                	if(count == boundaryBytes.length) {
+                	if (count == boundaryBytes.length) {
                 		ignoreNextRead = true;
                 		break;
                 	}
@@ -124,16 +124,16 @@ public class MultipartReader {
             }
         } catch (IOException ee) {
         }
-        if(ignoreNextRead) {
+        if (ignoreNextRead) {
         	byte[] left = new byte[count + 1];
         	System.arraycopy(b, off + i - count, left, 0, left.length);
         	leftover = ByteBuffer.wrap(left);
-        	for(int j = i - count; j < i; j++) {
+        	for (int j = i - count; j < i; j++) {
         		b[j + off] = -1;
         	}
         	//Peek at the data, make sure we aren't leaving a \r\n
         	int d = leftover.get(leftover.position());
-        	if(d == '\r' || d == '\n') {
+        	if (d == '\r' || d == '\n') {
         		leftover.position(leftover.position() + 2);
         	}
         }
@@ -173,7 +173,7 @@ public class MultipartReader {
 		StringBuilder bldr = new StringBuilder();
 		while (true) {
 			int b = read();
-			if(bldr.indexOf(boundary) == 0) {
+			if (bldr.indexOf(boundary) == 0) {
 				leftover = ByteBuffer.allocate(boundaryBytes.length);
 				leftover.put(boundaryBytes);
 				bldr.delete(bldr.indexOf(boundary), bldr.length());

@@ -88,8 +88,9 @@ public class HttpSession implements Runnable {
 			int idx = l.indexOf(' ');
 			// Split out the method and path
 			HttpMethod method = HttpMethod.valueOf(l.substring(0, idx));
-			if(method == null) {
-				
+			if (method == null) {
+				sendError(HttpStatus.METHOD_NOT_ALLOWED, "This server currently does not support this method.");
+				return;
 			}
 			String path = l.substring(idx + 1, l.lastIndexOf(' '));
 			double version = Double.parseDouble(l.substring(l.lastIndexOf('/') + 1));
@@ -147,7 +148,7 @@ public class HttpSession implements Runnable {
 						totalRead += read;
 					}
 					String data = new String(b);
-					if(contentType.equalsIgnoreCase("application/x-www-form-urlencoded")) {
+					if (contentType.equalsIgnoreCase("application/x-www-form-urlencoded")) {
 						//It is FOR SURE regular data.
 						request.setPostData(parseData(data));
 					} else {
@@ -182,7 +183,7 @@ public class HttpSession implements Runnable {
 		MultipartReader reader = new MultipartReader(input, boundary);
 		String l;
 		while((l = reader.readLine()) != null) {
-			if(!l.startsWith(boundary)) {
+			if (!l.startsWith(boundary)) {
 				break;
 			}
 			//Read headers
@@ -197,23 +198,23 @@ public class HttpSession implements Runnable {
 				props.put(key, value);
 			}
 			//Check if the line STILL isn't null
-			if(l != null) {
+			if (l != null) {
 				String contentDisposition = props.get(HttpHeader.CONTENT_DISPOSITION);
 				Map<String, String> disposition = new HashMap<String, String>();
 				String[] dis = contentDisposition.split("; ");
-				for(String s : dis) {
+				for (String s : dis) {
 					int eqIdx = s.indexOf('=');
-					if(eqIdx != -1) {
+					if (eqIdx != -1) {
 						String key = s.substring(0, eqIdx);
 						String value = s.substring(eqIdx+1).trim();
-						if(value.charAt(0) == '"') {
+						if (value.charAt(0) == '"') {
 							value = value.substring(1, value.length() - 1);
 						}
 						disposition.put(key, value);
 					}
 				}
 				String name = disposition.get("name");
-				if(props.containsKey(HttpHeader.CONTENT_TYPE)) {
+				if (props.containsKey(HttpHeader.CONTENT_TYPE)) {
 					String fileName = disposition.get("filename");
 					//Create a temporary file, this'll hopefully be deleted when the request object has finalize() called
 					File tmp = File.createTempFile("upload", fileName);
@@ -223,7 +224,7 @@ public class HttpSession implements Runnable {
 					byte[] buffer = new byte[1024];
 					while(true) {
 						int read = reader.readUntilBoundary(buffer, 0, buffer.length);
-						if(read == -1) {
+						if (read == -1) {
 							break;
 						}
 						output.write(buffer, 0, read);
@@ -237,7 +238,7 @@ public class HttpSession implements Runnable {
 					//String value
 					while((l = reader.readLineUntilBoundary()) != null && l.indexOf(boundary) == -1) {
 						int idx = l.indexOf(boundary);
-						if(idx == -1) {
+						if (idx == -1) {
 							value += l;
 						} else {
 							value += l.substring(0, idx);
@@ -303,9 +304,9 @@ public class HttpSession implements Runnable {
 			} finally {
 				res.close();
 			}
-		} else if(resp.getResponse() instanceof String) {
+		} else if (resp.getResponse() instanceof String) {
 			output.write(((String) resp.getResponse()).getBytes());
-		} else if(resp.getResponse() instanceof byte[]) {
+		} else if (resp.getResponse() instanceof byte[]) {
 			output.write((byte[]) resp.getResponse());
 		}
 		//Close it if required.

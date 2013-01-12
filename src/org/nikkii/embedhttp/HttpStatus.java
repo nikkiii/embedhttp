@@ -1,4 +1,4 @@
-package org.nikkii.http;
+package org.nikkii.embedhttp;
 
 /**
  * An enum containing Valid HTTP status codes

@@ -51,14 +51,14 @@ public class HttpStaticFileHandler implements HttpRequestHandler {
 		File file = new File(documentRoot, request.getUri());
 		if (file.exists() && !file.isDirectory()) {
 			try {
-				if(documentRootPath == null) {
+				if (documentRootPath == null) {
 					documentRootPath = documentRoot.getAbsolutePath();
-					if(documentRootPath.endsWith("/")) {
+					if (documentRootPath.endsWith("/")) {
 						documentRootPath = documentRootPath.substring(0, documentRootPath.length()-2);
 					}
 				}
 				String requestPath = file.getCanonicalPath();
-				if(requestPath.endsWith("/")) {
+				if (requestPath.endsWith("/")) {
 					requestPath = requestPath.substring(0, requestPath.length()-2);
 				}
 				if (!requestPath.startsWith(documentRootPath)) {

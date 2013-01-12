@@ -133,10 +133,10 @@ public class HttpRequest {
 	@Override
 	public void finalize() {
 		if(postData != null) {
-			for(Object value : postData.values()) {
-				if(value instanceof HttpFileUpload) {
+			for (Object value : postData.values()) {
+				if (value instanceof HttpFileUpload) {
 					HttpFileUpload u = (HttpFileUpload) value;
-					if(!u.getTempFile().delete()) {
+					if (!u.getTempFile().delete()) {
 						u.getTempFile().deleteOnExit();
 					}
 				}

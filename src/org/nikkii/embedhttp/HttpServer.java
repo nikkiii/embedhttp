@@ -85,7 +85,7 @@ public class HttpServer implements Runnable {
 	 * Start the server in a new thread
 	 */
 	public void start() {
-		if(socket == null) {
+		if (socket == null) {
 			throw new RuntimeException("Cannot bind a server that has not been initialized!");
 		}
 		Thread t = new Thread(this);
@@ -145,9 +145,9 @@ public class HttpServer implements Runnable {
 	 * 			If an error occurs while sending the response from the handler
 	 */
 	public void dispatchRequest(HttpRequest httpRequest) throws IOException {
-		for(HttpRequestHandler handler : handlers) {
+		for (HttpRequestHandler handler : handlers) {
 			HttpResponse resp = handler.handleRequest(httpRequest);
-			if(resp != null) {
+			if (resp != null) {
 				httpRequest.getSession().sendResponse(resp);
 				return;
 			}
