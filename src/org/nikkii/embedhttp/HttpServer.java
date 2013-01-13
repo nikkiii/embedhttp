@@ -66,7 +66,7 @@ public class HttpServer implements Runnable {
 	 * Bind the server to the specified port
 	 * 
 	 * @param port
-	 *            The pot to bind to
+	 *            The port to bind to
 	 * @throws IOException
 	 */
 	public void bind(int port) throws IOException {
