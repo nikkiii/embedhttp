@@ -6,7 +6,7 @@ package org.nikkii.embedhttp;
  * Missing: PUT, HEAD, DELETE etc
  * 
  * @author Nikki
- *
+ * 
  */
 public enum HttpMethod {
 	GET, POST
