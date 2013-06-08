@@ -132,7 +132,10 @@ public class HttpSession implements Runnable {
 			
 			int questionIdx = path.indexOf('?');
 			if(questionIdx != -1) {
-				request.setGetData(HttpUtil.parseData(path.substring(questionIdx+1)));
+				String queryString = path.substring(questionIdx+1);
+				request.setQueryString(queryString);
+				request.setGetData(HttpUtil.parseData(queryString));
+				
 				path = path.substring(0, questionIdx);
 				request.setUri(path);
 			}
@@ -268,7 +271,6 @@ public class HttpSession implements Runnable {
 						disposition.put(key, value);
 					}
 				}
-				System.out.println("Disposition: " + disposition);
 				String name = disposition.get("name");
 				if (props.containsKey(HttpHeader.CONTENT_TYPE)) {
 					String fileName = disposition.get("filename");

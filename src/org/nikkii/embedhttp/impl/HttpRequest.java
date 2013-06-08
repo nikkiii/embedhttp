@@ -33,6 +33,11 @@ public class HttpRequest {
 	private Map<String, String> headers;
 
 	/**
+	 * Raw Query String
+	 */
+	private String queryString;
+
+	/**
 	 * Raw POST data (Not applicable for form-encoded, automatically parsed)
 	 */
 	private String data;
@@ -150,6 +155,25 @@ public class HttpRequest {
 	 */
 	public void setUri(String uri) {
 		this.uri = uri;
+	}
+	
+	/**
+	 * Sets the request's query string
+	 * @param queryString
+	 * 			The query string to set
+	 */
+	public void setQueryString(String queryString) {
+		this.queryString = queryString;
+	}
+	
+	/**
+	 * Gets the request's query string
+	 * 
+	 * @return
+	 * 			The query string
+	 */
+	public String getQueryString() {
+		return queryString;
 	}
 
 	/**
