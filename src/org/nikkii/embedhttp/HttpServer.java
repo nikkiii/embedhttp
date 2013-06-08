@@ -11,6 +11,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.nikkii.embedhttp.handler.HttpRequestHandler;
+import org.nikkii.embedhttp.impl.HttpCapability;
+import org.nikkii.embedhttp.impl.HttpRequest;
+import org.nikkii.embedhttp.impl.HttpResponse;
+import org.nikkii.embedhttp.impl.HttpSession;
+import org.nikkii.embedhttp.impl.HttpStatus;
 
 /**
  * The main HttpServer class
@@ -41,6 +46,7 @@ public class HttpServer implements Runnable {
 			set(HttpCapability.HTTP_1_1.ordinal(), true);
 			set(HttpCapability.STANDARD_POST.ordinal(), true);
 			set(HttpCapability.MULTIPART_POST.ordinal(), false);
+			set(HttpCapability.THREADEDRESPONSE.ordinal(), false);
 		}
 	};
 
@@ -163,8 +169,10 @@ public class HttpServer implements Runnable {
 				return;
 			}
 		}
-		// If it's still here nothing handled it.
-		httpRequest.getSession().sendResponse(new HttpResponse(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND.toString()));
+		if(!hasCapability(HttpCapability.THREADEDRESPONSE)) {
+			// If it's still here nothing handled it.
+			httpRequest.getSession().sendResponse(new HttpResponse(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND.toString()));
+		}
 	}
 
 	/**

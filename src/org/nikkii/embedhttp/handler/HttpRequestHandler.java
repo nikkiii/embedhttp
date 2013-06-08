@@ -1,7 +1,7 @@
 package org.nikkii.embedhttp.handler;
 
-import org.nikkii.embedhttp.HttpRequest;
-import org.nikkii.embedhttp.HttpResponse;
+import org.nikkii.embedhttp.impl.HttpRequest;
+import org.nikkii.embedhttp.impl.HttpResponse;
 
 /**
  * Represents an Http request handler

@@ -118,7 +118,7 @@ public class MultipartReader {
 				// Verify that we aren't reading into our boundary
 				if (b[off + i] == boundaryBytes[count]) {
 					count++;
-					if (count == boundaryBytes.length) {
+					if (count >= boundaryBytes.length) {
 						ignoreNextRead = true;
 						break;
 					}
@@ -138,7 +138,7 @@ public class MultipartReader {
 			// Peek at the data, make sure we aren't leaving a \r\n
 			int d = leftover.get(leftover.position());
 			if (d == '\r' || d == '\n') {
-				leftover.position(leftover.position() + 2);
+				leftover.position(leftover.position() + d == '\r' ? 2 : 1);
 			}
 		}
 		return i - count;
@@ -179,9 +179,8 @@ public class MultipartReader {
 		while (true) {
 			int b = read();
 			if (bldr.indexOf(boundary) == 0) {
-				leftover = ByteBuffer.allocate(boundaryBytes.length);
-				leftover.put(boundaryBytes);
-				bldr.delete(bldr.indexOf(boundary), bldr.length());
+				leftover = ByteBuffer.wrap(boundaryBytes);
+				return null;
 			} else if (b == -1 || b == 10) {
 				break;
 			} else if (b != '\r') {

@@ -41,9 +41,6 @@ public class HttpStaticFileHandler implements HttpRequestHandler {
 	@Override
 	public HttpResponse handleRequest(HttpRequest request) {
 		String uri = request.getUri();
-		if (uri.indexOf('?') != -1) {
-			uri = uri.substring(0, uri.indexOf('?'));
-		}
 		try {
 			uri = URLDecoder.decode(uri, "UTF-8");
 		} catch (UnsupportedEncodingException e1) {
