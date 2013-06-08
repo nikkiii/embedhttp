@@ -6,9 +6,9 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
-import org.nikkii.embedhttp.HttpRequest;
-import org.nikkii.embedhttp.HttpResponse;
-import org.nikkii.embedhttp.HttpStatus;
+import org.nikkii.embedhttp.impl.HttpRequest;
+import org.nikkii.embedhttp.impl.HttpResponse;
+import org.nikkii.embedhttp.impl.HttpStatus;
 
 /**
  * A RequestHandler to handle serving of simple static files
@@ -49,7 +49,7 @@ public class HttpStaticFileHandler implements HttpRequestHandler {
 		} catch (UnsupportedEncodingException e1) {
 			uri = uri.replace("%20", " ");
 		}
-		File file = new File(documentRoot, request.getUri());
+		File file = new File(documentRoot, uri);
 		if (file.exists() && !file.isDirectory()) {
 			try {
 				if (documentRootPath == null) {
