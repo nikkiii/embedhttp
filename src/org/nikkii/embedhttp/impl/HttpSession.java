@@ -12,8 +12,11 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.StringTokenizer;
 
 import org.nikkii.embedhttp.HttpServer;
 import org.nikkii.embedhttp.util.HttpUtil;
@@ -138,6 +141,25 @@ public class HttpSession implements Runnable {
 				
 				path = path.substring(0, questionIdx);
 				request.setUri(path);
+			}
+			
+			// Parse cookies, only if the server has the capability enabled (to save time, processing power, and memory if it isn't used)
+			if(headers.containsKey(HttpHeader.COOKIE) && server.hasCapability(HttpCapability.COOKIES)) {
+				List<HttpCookie> cookies = new LinkedList<HttpCookie>();
+				StringTokenizer tok = new StringTokenizer(headers.get(HttpHeader.COOKIE), ";");
+				while(tok.hasMoreTokens()) {
+					String token = tok.nextToken();
+					int eqIdx = token.indexOf('=');
+					if(eqIdx == -1) {
+						// Invalid cookie
+						continue;
+					}
+					String key = token.substring(0, eqIdx);
+					String value = token.substring(eqIdx + 1);
+					
+					cookies.add(new HttpCookie(key, value));
+				}
+				request.setCookies(cookies);
 			}
 
 			// Read the request data
@@ -341,11 +363,14 @@ public class HttpSession implements Runnable {
 			resp.addHeader(HttpHeader.CONTENT_LENGTH, resp.getResponseLength());
 		}
 		// Copy in the headers
-		for (Entry<String, String> entry : resp.getHeaders().entrySet()) {
-			header.append(HttpUtil.capitalizeHeader(entry.getKey()));
-			header.append(':').append(' ');
-			header.append(entry.getValue());
-			header.append('\r').append('\n');
+		for (Entry<String, List<Object>> entry : resp.getHeaders().entrySet()) {
+			String headerName = HttpUtil.capitalizeHeader(entry.getKey());
+			for(Object o : entry.getValue()) {
+				header.append(headerName);
+				header.append(':').append(' ');
+				header.append(o);
+				header.append('\r').append('\n');
+			}
 		}
 		header.append('\r').append('\n');
 		// Write the header

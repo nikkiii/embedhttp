@@ -1,5 +1,8 @@
 package org.nikkii.embedhttp.impl;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.nikkii.embedhttp.util.HttpUtil;
@@ -51,6 +54,11 @@ public class HttpRequest {
 	 * The parsed POST data
 	 */
 	private Map<String, Object> postData;
+
+	/**
+	 * The list of parsed cookies
+	 */
+	private Map<String, HttpCookie> cookies;
 
 	/**
 	 * Construct a new HTTP request
@@ -201,6 +209,40 @@ public class HttpRequest {
 	 */
 	public Map<String, Object> getPostData() {
 		return postData;
+	}
+
+	/**
+	 * Set the request's cookies
+	 * 
+	 * @param cookies
+	 * 			The cookie list
+	 */
+	public void setCookies(List<HttpCookie> cookies) {
+		Map<String, HttpCookie> map = new HashMap<String, HttpCookie>();
+		for(HttpCookie cookie : cookies) {
+			map.put(cookie.getName(), cookie);
+		}
+		this.cookies = map;
+	}
+	
+	/**
+	 * Get a cookie with the specified name
+	 * @param name
+	 * 			The cookie name
+	 * @return
+	 * 			The cookie
+	 */
+	public HttpCookie getCookie(String name) {
+		return cookies.get(name);
+	}
+	
+	/**
+	 * Get the request's cookies
+	 * @return
+	 * 			The cookie list
+	 */
+	public Collection<HttpCookie> getCookies() {
+		return cookies == null ? null : cookies.values();
 	}
 
 	@Override

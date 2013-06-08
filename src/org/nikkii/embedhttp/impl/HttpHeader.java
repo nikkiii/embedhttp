@@ -18,4 +18,6 @@ public class HttpHeader {
 	public static final String TRANSFER_ENCODING = "Transfer-Encoding";
 	public static final String USER_AGENT = "User-Agent";
 	public static final String AUTHORIZATION = "Authorization";
+	public static final String COOKIE = "Cookie";
+	public static final String SET_COOKIE = "Set-Cookie";
 }

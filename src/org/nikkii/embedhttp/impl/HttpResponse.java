@@ -2,7 +2,9 @@ package org.nikkii.embedhttp.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,7 +23,7 @@ public class HttpResponse {
 	/**
 	 * The Http response headers
 	 */
-	private Map<String, String> headers = new HashMap<String, String>();
+	private Map<String, List<Object>> headers = new HashMap<String, List<Object>>();
 
 	/**
 	 * The response (InputStream, String or byte array)
@@ -105,6 +107,15 @@ public class HttpResponse {
 	public HttpStatus getStatus() {
 		return status;
 	}
+	
+	/**
+	 * Adds a cookie to this response
+	 * @param cookie
+	 * 			The cookie to add
+	 */
+	public void addCookie(HttpCookie cookie) {
+		addHeader(HttpHeader.SET_COOKIE, cookie.toHeader());
+	}
 
 	/**
 	 * Add a header to the response
@@ -115,7 +126,11 @@ public class HttpResponse {
 	 *            The header value
 	 */
 	public void addHeader(String key, Object value) {
-		headers.put(key, value.toString());
+		List<Object> values = headers.get(key);
+		if(values == null) {
+			headers.put(key, values = new ArrayList<Object>());
+		}
+		values.add(value);
 	}
 
 	/**
@@ -125,7 +140,7 @@ public class HttpResponse {
 	 *            The header name (Case sensitive)
 	 * @return The header value
 	 */
-	public String getHeader(String key) {
+	public List<Object> getHeaders(String key) {
 		return headers.get(key);
 	}
 
@@ -134,7 +149,7 @@ public class HttpResponse {
 	 * 
 	 * @return The header map
 	 */
-	public Map<String, String> getHeaders() {
+	public Map<String, List<Object>> getHeaders() {
 		return headers;
 	}
 
