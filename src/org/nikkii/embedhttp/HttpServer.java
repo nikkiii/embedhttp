@@ -45,8 +45,6 @@ public class HttpServer implements Runnable {
 		{
 			set(HttpCapability.HTTP_1_1.ordinal(), true);
 			set(HttpCapability.STANDARD_POST.ordinal(), true);
-			set(HttpCapability.MULTIPART_POST.ordinal(), false);
-			set(HttpCapability.THREADEDRESPONSE.ordinal(), false);
 		}
 	};
 

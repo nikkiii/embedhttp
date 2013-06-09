@@ -19,7 +19,7 @@ public class HttpCookie {
 	 * The RFC1123 date pattern
 	 */
 	private final static String RFC1123_PATTERN =
-	        "EEE, dd MMM yyyyy HH:mm:ss z";
+	        "EEE, dd MMM yyyy HH:mm:ss z";
 	
 	/**
 	 * GMT Timezone
@@ -156,6 +156,9 @@ public class HttpCookie {
 		}
 		if(expireTime > -1) {
 			header.append("; ").append("Expires=").append(RFC_DATEFORMAT.format(new Date(expireTime)));
+		}
+		if(secure) {
+			header.append("; ").append("Secure");
 		}
 		return header.toString();
 	}
