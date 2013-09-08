@@ -48,6 +48,8 @@ public class HttpServer implements Runnable {
 		}
 	};
 
+	private boolean running;
+
 	/**
 	 * Construct a new HttpServer
 	 */
@@ -98,9 +100,23 @@ public class HttpServer implements Runnable {
 		if (socket == null) {
 			throw new RuntimeException("Cannot bind a server that has not been initialized!");
 		}
+		running = true;
+		
 		Thread t = new Thread(this);
 		t.setName("HttpServer");
 		t.start();
+	}
+	
+	/**
+	 * Stop the server
+	 */
+	public void stop() {
+		running = false;
+		try {
+			socket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -108,7 +124,7 @@ public class HttpServer implements Runnable {
 	 */
 	@Override
 	public void run() {
-		while (true) {
+		while (running) {
 			try {
 				// Read the request
 				service.execute(new HttpSession(this, socket.accept()));

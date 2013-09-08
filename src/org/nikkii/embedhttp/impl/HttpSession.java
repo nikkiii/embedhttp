@@ -206,7 +206,7 @@ public class HttpSession implements Runnable {
 								// hang the thread?
 								byte[] b = new byte[contentLength + 1];
 								int read, totalRead = 0;
-								while ((read = input.read(b, totalRead, contentLength - totalRead)) > -1) {
+								while (contentLength - totalRead > 0 && (read = input.read(b, totalRead, contentLength - totalRead)) > -1) {
 									totalRead += read;
 								}
 								// We either read all of the data, or the
