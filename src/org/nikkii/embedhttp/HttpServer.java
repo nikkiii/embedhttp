@@ -129,7 +129,7 @@ public class HttpServer implements Runnable {
 				// Read the request
 				service.execute(new HttpSession(this, socket.accept()));
 			} catch (IOException e) {
-				e.printStackTrace();
+				// Ignore mostly.
 			}
 		}
 	}

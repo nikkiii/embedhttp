@@ -99,6 +99,8 @@ public class HttpSession implements Runnable {
 
 			// Otherwise continue on
 			int idx = l.indexOf(' ');
+			
+			System.out.println(l);
 
 			// Split out the method and path
 			HttpMethod method = HttpMethod.valueOf(l.substring(0, idx));
@@ -204,7 +206,7 @@ public class HttpSession implements Runnable {
 								// Read the reported content length, TODO some
 								// kind of check/timeout to make sure it won't
 								// hang the thread?
-								byte[] b = new byte[contentLength + 1];
+								byte[] b = new byte[contentLength];
 								int read, totalRead = 0;
 								while (contentLength - totalRead > 0 && (read = input.read(b, totalRead, contentLength - totalRead)) > -1) {
 									totalRead += read;

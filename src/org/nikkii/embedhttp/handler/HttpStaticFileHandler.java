@@ -52,12 +52,12 @@ public class HttpStaticFileHandler implements HttpRequestHandler {
 				if (documentRootPath == null) {
 					documentRootPath = documentRoot.getAbsolutePath();
 					if (documentRootPath.endsWith("/") || documentRootPath.endsWith(".")) {
-						documentRootPath = documentRootPath.substring(0, documentRootPath.length() - 2);
+						documentRootPath = documentRootPath.substring(0, documentRootPath.length() - 1);
 					}
 				}
 				String requestPath = file.getCanonicalPath();
 				if (requestPath.endsWith("/")) {
-					requestPath = requestPath.substring(0, requestPath.length() - 2);
+					requestPath = requestPath.substring(0, requestPath.length() - 1);
 				}
 				if (!requestPath.startsWith(documentRootPath)) {
 					return new HttpResponse(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.toString());
