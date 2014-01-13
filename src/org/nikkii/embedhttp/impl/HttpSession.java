@@ -99,8 +99,6 @@ public class HttpSession implements Runnable {
 
 			// Otherwise continue on
 			int idx = l.indexOf(' ');
-			
-			System.out.println(l);
 
 			// Split out the method and path
 			HttpMethod method = HttpMethod.valueOf(l.substring(0, idx));
