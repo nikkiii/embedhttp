@@ -356,7 +356,7 @@ public class HttpSession implements Runnable {
 		header.append('\r').append('\n');
 		// Set the content type header if it's not already set
 		if (!resp.getHeaders().containsKey(HttpHeader.CONTENT_TYPE)) {
-			resp.addHeader(HttpHeader.CONTENT_TYPE, "text/html");
+			resp.addHeader(HttpHeader.CONTENT_TYPE, "text/html; charset=utf-8");
 		}
 		// Set the content length header if it's not already set
 		if (!resp.getHeaders().containsKey(HttpHeader.CONTENT_LENGTH)) {
@@ -374,7 +374,7 @@ public class HttpSession implements Runnable {
 		}
 		header.append('\r').append('\n');
 		// Write the header
-		output.write(header.toString().getBytes());
+		output.write(header.toString().getBytes("UTF-8"));
 		// Responses can be InputStreams or Strings
 		if (resp.getResponse() instanceof InputStream) {
 			// InputStreams will block the session thread (No big deal) and send
@@ -393,7 +393,8 @@ public class HttpSession implements Runnable {
 				res.close();
 			}
 		} else if (resp.getResponse() instanceof String) {
-			output.write(((String) resp.getResponse()).getBytes());
+			String responseString = (String) resp.getResponse();
+			output.write(responseString.getBytes("UTF-8"));
 		} else if (resp.getResponse() instanceof byte[]) {
 			output.write((byte[]) resp.getResponse());
 		}
