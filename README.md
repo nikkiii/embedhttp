@@ -2,6 +2,8 @@
 
 A small and easily embeddable Java Http server for use in applications.
 
+[![Build Status](https://travis-ci.org/nikkiii/embedhttp.svg?branch=master)](https://travis-ci.org/nikkiii/embedhttp)
+
 ## Requirements
 
 - Java Development Kit/Java Runtime Environment 1.6+ (Could work in 1.5?)
