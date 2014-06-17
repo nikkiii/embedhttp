@@ -11,7 +11,11 @@ A small and easily embeddable Java Http server for use in applications.
 ## Usage
 
 	HttpServer server = new HttpServer();
-	//Add any request handlers, for instance the static file handler:
+	
+	//~ Add any request handlers
+	// static file handler (from jar's resources) :
+	server.addRequestHandler(new HttpStaticJarFileHandler());
+	// static file handler (from filesystem) :
 	server.addRequestHandler(new HttpStaticFileHandler(new File(".")));
 	//Or your own:
 	server.addRequestHandler(new HttpRequestHandler() {
