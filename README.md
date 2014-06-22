@@ -15,6 +15,8 @@ A small and easily embeddable Java Http server for use in applications.
 	//~ Add any request handlers
 	// static file handler (from jar's resources) :
 	server.addRequestHandler(new HttpStaticJarFileHandler());
+    // static file handler (from jar's resources with path) :
+    server.addRequestHandler(new HttpStaticJarFileHandler("/assets/http/"));
 	// static file handler (from filesystem) :
 	server.addRequestHandler(new HttpStaticFileHandler(new File(".")));
 	//Or your own:
