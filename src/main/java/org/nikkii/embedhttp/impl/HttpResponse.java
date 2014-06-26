@@ -206,7 +206,7 @@ public class HttpResponse {
 	/**
 	 * Set the response length
 	 * 
-	 * @param length
+	 * @param responseLength
 	 *            The response length to set.
 	 */
 	public void setResponseLength(long responseLength) {
