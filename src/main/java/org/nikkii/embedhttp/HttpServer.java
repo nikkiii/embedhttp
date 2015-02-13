@@ -135,6 +135,14 @@ public class HttpServer implements Runnable {
 	}
 
 	/**
+	 * Get the port number that the service is listening on. Useful when initializing
+	 * with an automatically-assigned port number.
+	 */
+	public int getPort() {
+		return socket.getLocalPort();
+	}
+
+	/**
 	 * Set a capability
 	 * 
 	 * @param capability
