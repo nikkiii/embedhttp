@@ -101,7 +101,14 @@ public class HttpSession implements Runnable {
 			int idx = l.indexOf(' ');
 
 			// Split out the method and path
-			HttpMethod method = HttpMethod.valueOf(l.substring(0, idx));
+			String methodString = l.substring(0, idx);
+			HttpMethod method = null;
+
+			for (HttpMethod m : HttpMethod.values()) {
+				if (m.name().equals(methodString)) {
+					method = m;
+				}
+			}
 
 			// If it's an known method it won't be defined in the enum
 			if (method == null) {
