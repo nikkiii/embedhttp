@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.SocketAddress;
+import java.net.URLConnection;
 import java.util.BitSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,6 +17,7 @@ import org.nikkii.embedhttp.impl.HttpRequest;
 import org.nikkii.embedhttp.impl.HttpResponse;
 import org.nikkii.embedhttp.impl.HttpSession;
 import org.nikkii.embedhttp.impl.HttpStatus;
+import org.nikkii.embedhttp.util.content.ContentTypeMap;
 
 /**
  * The main HttpServer class
@@ -54,7 +56,7 @@ public class HttpServer implements Runnable {
 	 * Construct a new HttpServer
 	 */
 	public HttpServer() {
-
+		URLConnection.setFileNameMap(new ContentTypeMap());
 	}
 
 	/**
