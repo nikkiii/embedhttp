@@ -22,4 +22,5 @@ public class HttpHeader {
 	public static final String SET_COOKIE = "Set-Cookie";
 	public static final String ACCEPT_RANGES = "Accept-Ranges";
 	public static final String RANGE = "Range";
+	public static final String CONTENT_RANGE = "Content-Range";
 }

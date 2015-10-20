@@ -72,8 +72,6 @@ public class HttpStaticFileHandler implements HttpRequestHandler {
 				if (request.getHeaders().containsKey("Range")) {
 					String range = request.getHeader(HttpHeader.RANGE);
 
-					System.out.println("Range request: " + range);
-
 					// Validate range unit
 					if (range.indexOf('=') == -1 || !range.substring(0, range.indexOf('=')).trim().equals("bytes")) {
 						return new HttpResponse(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.toString());
@@ -93,6 +91,7 @@ public class HttpStaticFileHandler implements HttpRequestHandler {
 						end = Long.parseLong(range.substring(range.indexOf('-')));
 					} catch (NumberFormatException e) {
 						// Nothing, since end doesn't have to be valid.
+						end = file.length();
 					}
 
 					FileInputStream input = new FileInputStream(file);
@@ -100,7 +99,8 @@ public class HttpStaticFileHandler implements HttpRequestHandler {
 
 					// Range request
 					res = new HttpResponse(HttpStatus.PARTIAL_CONTENT, input);
-					res.setResponseLength((end == -1 ? file.length() : end) - start);
+					res.setResponseLength(end - start);
+					res.addHeader(HttpHeader.CONTENT_RANGE, start + "-" + end + "/" + file.length());
 				} else {
 					res = new HttpResponse(HttpStatus.OK, new FileInputStream(file));
 					res.setResponseLength(file.length());
