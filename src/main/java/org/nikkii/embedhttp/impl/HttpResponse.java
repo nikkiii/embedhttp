@@ -73,6 +73,22 @@ public class HttpResponse {
 	}
 
 	/**
+	 * Construct a new Http Response from an InputStream. Note: When using this
+	 * make sure to add a request header for length! The auto-calculated header
+	 * WILL NOT be accurate.
+	 *
+	 * @param status
+	 *            The response status
+	 * @param response
+	 *            The response data
+	 */
+	public HttpResponse(HttpStatus status, InputStream response, long responseLength) {
+		this.status = status;
+		this.response = response;
+		this.responseLength = responseLength;
+	}
+
+	/**
 	 * Construct a new Http response with a string as the data
 	 * 
 	 * @param status

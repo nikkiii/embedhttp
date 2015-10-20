@@ -50,6 +50,11 @@ public class HttpSession implements Runnable {
 	 */
 	private OutputStream output;
 
+	/**
+	 * The last request of this session
+	 */
+	private HttpRequest request;
+
 	public HttpSession(HttpServer server, Socket socket) throws IOException {
 		this.server = server;
 		this.socket = socket;
@@ -244,6 +249,8 @@ public class HttpSession implements Runnable {
 				}
 			}
 
+			this.request = request;
+
 			server.dispatchRequest(request);
 		} catch (SocketException e) {
 			//Socket was closed probably
@@ -382,28 +389,41 @@ public class HttpSession implements Runnable {
 		header.append('\r').append('\n');
 		// Write the header
 		output.write(header.toString().getBytes("UTF-8"));
-		// Responses can be InputStreams or Strings
-		if (resp.getResponse() instanceof InputStream) {
-			// InputStreams will block the session thread (No big deal) and send
-			// data without loading it into memory
-			InputStream res = resp.getResponse();
-			try {
-				// Write the body
-				byte[] buffer = new byte[1024];
-				while (true) {
-					int read = res.read(buffer, 0, buffer.length);
-					if (read == -1)
-						break;
-					output.write(buffer, 0, read);
-				}
-			} finally {
-				res.close();
+
+		// Ignore the body for headers and no content
+		if (request.getMethod() == HttpMethod.HEAD || resp.getStatus() == HttpStatus.NO_CONTENT) {
+			if (resp.getResponse() instanceof InputStream) {
+				((InputStream) resp.getResponse()).close();
 			}
-		} else if (resp.getResponse() instanceof String) {
-			String responseString = (String) resp.getResponse();
-			output.write(responseString.getBytes("UTF-8"));
-		} else if (resp.getResponse() instanceof byte[]) {
-			output.write((byte[]) resp.getResponse());
+		} else {
+			// Responses can be InputStreams or Strings
+			if (resp.getResponse() instanceof InputStream) {
+				// InputStreams will block the session thread (No big deal) and send
+				// data without loading it into memory
+				InputStream res = resp.getResponse();
+				try {
+					long remaining = resp.getResponseLength();
+					// Write the body
+					byte[] buffer = new byte[1024];
+					while (remaining > 0) {
+						int read = res.read(buffer, 0, remaining > buffer.length ? buffer.length : (int) remaining);
+						if (read == -1) {
+							break;
+						}
+
+						output.write(buffer, 0, read);
+
+						remaining -= read;
+					}
+				} finally {
+					res.close();
+				}
+			} else if (resp.getResponse() instanceof String) {
+				String responseString = resp.getResponse();
+				output.write(responseString.getBytes("UTF-8"));
+			} else if (resp.getResponse() instanceof byte[]) {
+				output.write((byte[]) resp.getResponse());
+			}
 		}
 		// Close it if required.
 		if (close) {

@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URLConnection;
 import java.net.URLDecoder;
 
+import org.nikkii.embedhttp.impl.HttpHeader;
 import org.nikkii.embedhttp.impl.HttpRequest;
 import org.nikkii.embedhttp.impl.HttpResponse;
 import org.nikkii.embedhttp.impl.HttpStatus;
@@ -66,8 +68,53 @@ public class HttpStaticFileHandler implements HttpRequestHandler {
 				return new HttpResponse(HttpStatus.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR.toString());
 			}
 			try {
-				HttpResponse res = new HttpResponse(HttpStatus.OK, new FileInputStream(file));
-				res.setResponseLength(file.length());
+				HttpResponse res;
+				if (request.getHeaders().containsKey("Range")) {
+					String range = request.getHeader(HttpHeader.RANGE);
+
+					System.out.println("Range request: " + range);
+
+					// Validate range unit
+					if (range.indexOf('=') == -1 || !range.substring(0, range.indexOf('=')).trim().equals("bytes")) {
+						return new HttpResponse(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.toString());
+					}
+
+					range = range.substring(range.indexOf('=') + 1);
+
+					long start = 0, end = -1;
+
+					try {
+						start = Long.parseLong(range.substring(0, range.indexOf('-')));
+					} catch (NumberFormatException e) {
+						return new HttpResponse(HttpStatus.BAD_REQUEST, "Invalid range");
+					}
+
+					try {
+						end = Long.parseLong(range.substring(range.indexOf('-')));
+					} catch (NumberFormatException e) {
+						// Nothing, since end doesn't have to be valid.
+					}
+
+					FileInputStream input = new FileInputStream(file);
+					input.skip(start);
+
+					// Range request
+					res = new HttpResponse(HttpStatus.PARTIAL_CONTENT, input);
+					res.setResponseLength((end == -1 ? file.length() : end) - start);
+				} else {
+					res = new HttpResponse(HttpStatus.OK, new FileInputStream(file));
+					res.setResponseLength(file.length());
+				}
+
+				// Say that we support range requests
+				res.addHeader(HttpHeader.ACCEPT_RANGES, "bytes");
+
+				String contentType = URLConnection.guessContentTypeFromName(file.getName());
+
+				if (contentType != null) {
+					res.addHeader(HttpHeader.CONTENT_TYPE, contentType);
+				}
+
 				return res;
 			} catch (IOException e) {
 				e.printStackTrace();

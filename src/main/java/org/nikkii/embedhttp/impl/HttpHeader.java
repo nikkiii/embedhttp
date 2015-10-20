@@ -20,4 +20,6 @@ public class HttpHeader {
 	public static final String AUTHORIZATION = "Authorization";
 	public static final String COOKIE = "Cookie";
 	public static final String SET_COOKIE = "Set-Cookie";
+	public static final String ACCEPT_RANGES = "Accept-Ranges";
+	public static final String RANGE = "Range";
 }
