@@ -2,9 +2,8 @@ package org.nikkii.embedhttp.impl;
 
 /**
  * A class containing HTTP Header name constants
- * 
+ *
  * @author Nikki
- * 
  */
 public class HttpHeader {
 	public static final String CACHE_CONTROL = "Cache-Control";

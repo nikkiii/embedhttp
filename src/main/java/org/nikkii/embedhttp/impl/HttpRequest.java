@@ -1,17 +1,16 @@
 package org.nikkii.embedhttp.impl;
 
+import org.nikkii.embedhttp.util.HttpUtil;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.nikkii.embedhttp.util.HttpUtil;
-
 /**
  * Represents an Http request
- * 
+ *
  * @author Nikki
- * 
  */
 public class HttpRequest {
 
@@ -44,7 +43,7 @@ public class HttpRequest {
 	 * Raw POST data (Not applicable for form-encoded, automatically parsed)
 	 */
 	private String data;
-	
+
 	/**
 	 * The parsed GET data
 	 */
@@ -62,15 +61,11 @@ public class HttpRequest {
 
 	/**
 	 * Construct a new HTTP request
-	 * 
-	 * @param session
-	 *            The session which initiated the request
-	 * @param method
-	 *            The method used to request this page
-	 * @param uri
-	 *            The URI of the request
-	 * @param headers
-	 *            The request headers
+	 *
+	 * @param session The session which initiated the request
+	 * @param method The method used to request this page
+	 * @param uri The URI of the request
+	 * @param headers The request headers
 	 */
 	public HttpRequest(HttpSession session, HttpMethod method, String uri, Map<String, String> headers) {
 		this.session = session;
@@ -81,7 +76,7 @@ public class HttpRequest {
 
 	/**
 	 * Get the session which initiated this request
-	 * 
+	 *
 	 * @return The session
 	 */
 	public HttpSession getSession() {
@@ -90,7 +85,7 @@ public class HttpRequest {
 
 	/**
 	 * Get the request method
-	 * 
+	 *
 	 * @return The request method
 	 */
 	public HttpMethod getMethod() {
@@ -99,7 +94,7 @@ public class HttpRequest {
 
 	/**
 	 * Get the request uri
-	 * 
+	 *
 	 * @return The request uri
 	 */
 	public String getUri() {
@@ -108,19 +103,18 @@ public class HttpRequest {
 
 	/**
 	 * Get the request headers
-	 * 
+	 *
 	 * @return The request headers
 	 */
 	public Map<String, String> getHeaders() {
 		return headers;
 	}
-	
+
 	/**
 	 * Gets a request header
-	 * @param key
-	 * 			The request header key
-	 * @return
-	 * 			The header value
+	 *
+	 * @param key The request header key
+	 * @return The header value
 	 */
 	public String getHeader(String key) {
 		return headers.get(HttpUtil.capitalizeHeader(key));
@@ -128,9 +122,8 @@ public class HttpRequest {
 
 	/**
 	 * Set the request's raw POST data
-	 * 
-	 * @param data
-	 *            The data to set
+	 *
+	 * @param data The data to set
 	 */
 	public void setData(String data) {
 		this.data = data;
@@ -138,8 +131,8 @@ public class HttpRequest {
 
 	/**
 	 * Set the request's parsed GET data
-	 * @param getData
-	 * 			The parsed data map to set
+	 *
+	 * @param getData The parsed data map to set
 	 */
 	public void setGetData(Map<String, Object> getData) {
 		this.getData = getData;
@@ -147,38 +140,35 @@ public class HttpRequest {
 
 	/**
 	 * Set the request's parsed POST data
-	 * 
-	 * @param postData
-	 *            The parsed data map to set
+	 *
+	 * @param postData The parsed data map to set
 	 */
 	public void setPostData(Map<String, Object> postData) {
 		this.postData = postData;
 	}
-	
+
 	/**
 	 * Set the request's URI
-	 * 
-	 * @param uri
-	 * 			The uri to set
+	 *
+	 * @param uri The uri to set
 	 */
 	public void setUri(String uri) {
 		this.uri = uri;
 	}
-	
+
 	/**
 	 * Sets the request's query string
-	 * @param queryString
-	 * 			The query string to set
+	 *
+	 * @param queryString The query string to set
 	 */
 	public void setQueryString(String queryString) {
 		this.queryString = queryString;
 	}
-	
+
 	/**
 	 * Gets the request's query string
-	 * 
-	 * @return
-	 * 			The query string
+	 *
+	 * @return The query string
 	 */
 	public String getQueryString() {
 		return queryString;
@@ -186,16 +176,16 @@ public class HttpRequest {
 
 	/**
 	 * Get the request's raw POST data
-	 * 
+	 *
 	 * @return The request's POST data
 	 */
 	public String getData() {
 		return data;
 	}
-	
+
 	/**
 	 * Get the request's parsed GET data
-	 * 
+	 *
 	 * @return the parsed data map
 	 */
 	public Map<String, Object> getGetData() {
@@ -204,7 +194,7 @@ public class HttpRequest {
 
 	/**
 	 * Get the request's parsed POST data
-	 * 
+	 *
 	 * @return The parsed data map
 	 */
 	public Map<String, Object> getPostData() {
@@ -213,33 +203,31 @@ public class HttpRequest {
 
 	/**
 	 * Set the request's cookies
-	 * 
-	 * @param cookies
-	 * 			The cookie list
+	 *
+	 * @param cookies The cookie list
 	 */
 	public void setCookies(List<HttpCookie> cookies) {
 		Map<String, HttpCookie> map = new HashMap<String, HttpCookie>();
-		for(HttpCookie cookie : cookies) {
+		for (HttpCookie cookie : cookies) {
 			map.put(cookie.getName(), cookie);
 		}
 		this.cookies = map;
 	}
-	
+
 	/**
 	 * Get a cookie with the specified name
-	 * @param name
-	 * 			The cookie name
-	 * @return
-	 * 			The cookie
+	 *
+	 * @param name The cookie name
+	 * @return The cookie
 	 */
 	public HttpCookie getCookie(String name) {
 		return cookies.get(name);
 	}
-	
+
 	/**
 	 * Get the request's cookies
-	 * @return
-	 * 			The cookie list
+	 *
+	 * @return The cookie list
 	 */
 	public Collection<HttpCookie> getCookies() {
 		return cookies == null ? null : cookies.values();

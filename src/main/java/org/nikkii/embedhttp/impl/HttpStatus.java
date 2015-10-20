@@ -6,13 +6,12 @@ import java.util.Map;
 /**
  * An enum containing Valid HTTP status codes
  * http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
- * 
+ *
  * @author Nikki
- * 
  */
 public enum HttpStatus {
-	
-	CONTINUE(100, "Continue"), 
+
+	CONTINUE(100, "Continue"),
 	SWITCHING_PROTOCOLS(101, "Switching Protocols"),
 	OK(200, "OK"),
 	CREATED(201, "Created"),
@@ -52,12 +51,12 @@ public enum HttpStatus {
 	SERVICE_UNAVAILABLE(503, "Service Unavailable"),
 	GATEWAY_TIMEOUT(504, "Gateway Timeout"),
 	HTTP_VERSION_NOT_SUPPORTED(505, "HTTP Version Not Supported");
-	
+
 	/**
 	 * Map to support looking up codes by status
 	 */
 	private static Map<Integer, HttpStatus> codes = new HashMap<Integer, HttpStatus>();
-	
+
 	/**
 	 * Populate the map
 	 */
@@ -66,13 +65,12 @@ public enum HttpStatus {
 			codes.put(status.getCode(), status);
 		}
 	}
-	
+
 	/**
 	 * Lookup an HttpStatus by code
-	 * @param code
-	 * 			The code to look up
-	 * @return
-	 * 			The HttpStatus
+	 *
+	 * @param code The code to look up
+	 * @return The HttpStatus
 	 */
 	public static HttpStatus forCode(int code) {
 		return codes.get(code);
@@ -95,7 +93,7 @@ public enum HttpStatus {
 
 	/**
 	 * Get the status code
-	 * 
+	 *
 	 * @return The HTTP Status code
 	 */
 	public int getCode() {

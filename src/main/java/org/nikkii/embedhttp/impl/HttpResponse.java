@@ -10,9 +10,8 @@ import java.util.Map;
 
 /**
  * An Http Response.
- * 
+ *
  * @author Nikki
- * 
  */
 public class HttpResponse {
 
@@ -56,11 +55,9 @@ public class HttpResponse {
 	 * Construct a new Http Response from an InputStream. Note: When using this
 	 * make sure to add a request header for length! The auto-calculated header
 	 * WILL NOT be accurate.
-	 * 
-	 * @param status
-	 *            The response status
-	 * @param response
-	 *            The response data
+	 *
+	 * @param status The response status
+	 * @param response The response data
 	 */
 	public HttpResponse(HttpStatus status, InputStream response) {
 		this.status = status;
@@ -77,10 +74,9 @@ public class HttpResponse {
 	 * make sure to add a request header for length! The auto-calculated header
 	 * WILL NOT be accurate.
 	 *
-	 * @param status
-	 *            The response status
-	 * @param response
-	 *            The response data
+	 * @param status The response status.
+	 * @param response The response data.
+	 * @param responseLength The response length.
 	 */
 	public HttpResponse(HttpStatus status, InputStream response, long responseLength) {
 		this.status = status;
@@ -90,11 +86,9 @@ public class HttpResponse {
 
 	/**
 	 * Construct a new Http response with a string as the data
-	 * 
-	 * @param status
-	 *            The response status
-	 * @param response
-	 *            The response data
+	 *
+	 * @param status The response status
+	 * @param response The response data
 	 */
 	public HttpResponse(HttpStatus status, String response) {
 		this.status = status;
@@ -104,11 +98,9 @@ public class HttpResponse {
 
 	/**
 	 * Construct a new Http response with a byte array as the data
-	 * 
-	 * @param status
-	 *            The response status
-	 * @param response
-	 *            The response data
+	 *
+	 * @param status The response status
+	 * @param response The response data
 	 */
 	public HttpResponse(HttpStatus status, byte[] response) {
 		this.status = status;
@@ -118,17 +110,17 @@ public class HttpResponse {
 
 	/**
 	 * Get the Http response status
-	 * 
+	 *
 	 * @return The response status
 	 */
 	public HttpStatus getStatus() {
 		return status;
 	}
-	
+
 	/**
 	 * Adds a cookie to this response
-	 * @param cookie
-	 * 			The cookie to add
+	 *
+	 * @param cookie The cookie to add
 	 */
 	public void addCookie(HttpCookie cookie) {
 		addHeader(HttpHeader.SET_COOKIE, cookie.toHeader());
@@ -136,15 +128,13 @@ public class HttpResponse {
 
 	/**
 	 * Add a header to the response
-	 * 
-	 * @param key
-	 *            The header name
-	 * @param value
-	 *            The header value
+	 *
+	 * @param key The header name
+	 * @param value The header value
 	 */
 	public void addHeader(String key, Object value) {
 		List<Object> values = headers.get(key);
-		if(values == null) {
+		if (values == null) {
 			headers.put(key, values = new ArrayList<Object>());
 		}
 		values.add(value);
@@ -152,9 +142,8 @@ public class HttpResponse {
 
 	/**
 	 * Get a response header
-	 * 
-	 * @param key
-	 *            The header name (Case sensitive)
+	 *
+	 * @param key The header name (Case sensitive)
 	 * @return The header value
 	 */
 	public List<Object> getHeaders(String key) {
@@ -163,7 +152,7 @@ public class HttpResponse {
 
 	/**
 	 * Get the response headers
-	 * 
+	 *
 	 * @return The header map
 	 */
 	public Map<String, List<Object>> getHeaders() {
@@ -172,19 +161,18 @@ public class HttpResponse {
 
 	/**
 	 * Get the response as the specified type
-	 * 
+	 *
 	 * @return The response
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> T getResponse() {
 		return (T) response;
 	}
-	
+
 	/**
 	 * Set the response string
-	 * 
-	 * @param response
-	 * 			The response to set
+	 *
+	 * @param response The response to set
 	 */
 	public void setResponse(String response) {
 		this.response = response;
@@ -197,9 +185,8 @@ public class HttpResponse {
 
 	/**
 	 * Set the response Input Stream
-	 * 
-	 * @param response
-	 * 			The response to set
+	 *
+	 * @param response The response to set
 	 */
 	public void setResponse(InputStream response) {
 		this.response = response;
@@ -212,7 +199,7 @@ public class HttpResponse {
 
 	/**
 	 * Get the response length
-	 * 
+	 *
 	 * @return The response length, may not be accurate
 	 */
 	public long getResponseLength() {
@@ -221,9 +208,8 @@ public class HttpResponse {
 
 	/**
 	 * Set the response length
-	 * 
-	 * @param responseLength
-	 *            The response length to set.
+	 *
+	 * @param responseLength The response length to set.
 	 */
 	public void setResponseLength(long responseLength) {
 		this.responseLength = responseLength;

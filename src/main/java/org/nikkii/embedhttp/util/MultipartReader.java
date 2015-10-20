@@ -6,9 +6,8 @@ import java.nio.ByteBuffer;
 
 /**
  * A class to read Multipart form data while respecting the boundaries.
- * 
+ *
  * @author Nikki
- * 
  */
 public class MultipartReader {
 
@@ -40,11 +39,9 @@ public class MultipartReader {
 
 	/**
 	 * Construct a new MultipartReader
-	 * 
-	 * @param input
-	 *            The input stream
-	 * @param boundary
-	 *            The boundary
+	 *
+	 * @param input The input stream
+	 * @param boundary The boundary
 	 */
 	public MultipartReader(InputStream input, String boundary) {
 		this.input = input;
@@ -55,10 +52,9 @@ public class MultipartReader {
 	/**
 	 * Read a single byte, except it will try to use the leftover bytes from the
 	 * previous read first.
-	 * 
+	 *
 	 * @return The single byte read
-	 * @throws IOException
-	 *             If an error occurs
+	 * @throws IOException If an error occurs
 	 */
 	public int read() throws IOException {
 		if (leftover != null && leftover.remaining() > 0) {
@@ -75,16 +71,12 @@ public class MultipartReader {
 	 * Similar to the read(byte[] b, int off, int len) method in InputStream
 	 * Will read as much as it can until either the boundary is found or it runs
 	 * out of data.
-	 * 
-	 * @param b
-	 *            The byte array to store to
-	 * @param off
-	 *            The offset in the byte array
-	 * @param len
-	 *            The maximum length to read
+	 *
+	 * @param b The byte array to store to
+	 * @param off The offset in the byte array
+	 * @param len The maximum length to read
 	 * @return The amount of bytes read, or -1 for none
-	 * @throws IOException
-	 *             If an error occurred while reading
+	 * @throws IOException If an error occurred while reading
 	 */
 	public int readUntilBoundary(byte[] b, int off, int len) throws IOException {
 		if (b == null) {
@@ -147,10 +139,9 @@ public class MultipartReader {
 	/**
 	 * Reads a line up until \r\n This will act similar to
 	 * BufferedReader.readLine
-	 * 
+	 *
 	 * @return The line
-	 * @throws IOException
-	 *             If an error occurs while reading
+	 * @throws IOException If an error occurs while reading
 	 */
 	public String readLine() throws IOException {
 		StringBuilder bldr = new StringBuilder();
@@ -169,10 +160,9 @@ public class MultipartReader {
 	 * Reads a line up until \r\n OR the boundary This will act similar to
 	 * BufferedReader.readLine, except that it will stop at the defined
 	 * boundary.
-	 * 
+	 *
 	 * @return The line
-	 * @throws IOException
-	 *             If an error occurs while reading
+	 * @throws IOException If an error occurs while reading
 	 */
 	public String readLineUntilBoundary() throws IOException {
 		StringBuilder bldr = new StringBuilder();

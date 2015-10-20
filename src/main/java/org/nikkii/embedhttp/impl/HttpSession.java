@@ -1,5 +1,9 @@
 package org.nikkii.embedhttp.impl;
 
+import org.nikkii.embedhttp.HttpServer;
+import org.nikkii.embedhttp.util.HttpUtil;
+import org.nikkii.embedhttp.util.MultipartReader;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -18,15 +22,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.StringTokenizer;
 
-import org.nikkii.embedhttp.HttpServer;
-import org.nikkii.embedhttp.util.HttpUtil;
-import org.nikkii.embedhttp.util.MultipartReader;
-
 /**
  * Represents an Http Session
- * 
+ *
  * @author Nikki
- * 
  */
 public class HttpSession implements Runnable {
 
@@ -71,7 +70,7 @@ public class HttpSession implements Runnable {
 			byte[] bytes = new byte[8192];
 
 			int pos = 0;
-			
+
 			// Read the first part of the header
 			while (true) {
 				int read = input.read();
@@ -144,31 +143,31 @@ public class HttpSession implements Runnable {
 			reader.close();
 
 			HttpRequest request = new HttpRequest(this, method, path, headers);
-			
+
 			int questionIdx = path.indexOf('?');
-			if(questionIdx != -1) {
-				String queryString = path.substring(questionIdx+1);
+			if (questionIdx != -1) {
+				String queryString = path.substring(questionIdx + 1);
 				request.setQueryString(queryString);
 				request.setGetData(HttpUtil.parseData(queryString));
-				
+
 				path = path.substring(0, questionIdx);
 				request.setUri(path);
 			}
-			
+
 			// Parse cookies, only if the server has the capability enabled (to save time, processing power, and memory if it isn't used)
-			if(headers.containsKey(HttpHeader.COOKIE) && server.hasCapability(HttpCapability.COOKIES)) {
+			if (headers.containsKey(HttpHeader.COOKIE) && server.hasCapability(HttpCapability.COOKIES)) {
 				List<HttpCookie> cookies = new LinkedList<HttpCookie>();
 				StringTokenizer tok = new StringTokenizer(headers.get(HttpHeader.COOKIE), ";");
-				while(tok.hasMoreTokens()) {
+				while (tok.hasMoreTokens()) {
 					String token = tok.nextToken();
 					int eqIdx = token.indexOf('=');
-					if(eqIdx == -1) {
+					if (eqIdx == -1) {
 						// Invalid cookie
 						continue;
 					}
 					String key = token.substring(0, eqIdx);
 					String value = token.substring(eqIdx + 1);
-					
+
 					cookies.add(new HttpCookie(key, value));
 				}
 				request.setCookies(cookies);
@@ -261,12 +260,10 @@ public class HttpSession implements Runnable {
 
 	/**
 	 * Read the data from a multipart/form-data request
-	 * 
-	 * @param boundary
-	 *            The boundary specified by the client
+	 *
+	 * @param boundary The boundary specified by the client
 	 * @return A map of the POST data.
-	 * @throws IOException
-	 *             If an error occurs
+	 * @throws IOException If an error occurs
 	 */
 	public Map<String, Object> readMultipartData(String boundary) throws IOException {
 		// Boundaries are '--' + the boundary.
@@ -344,11 +341,9 @@ public class HttpSession implements Runnable {
 
 	/**
 	 * Send a response
-	 * 
-	 * @param resp
-	 *            The response to send
-	 * @throws IOException
-	 *             If an error occurred while sending
+	 *
+	 * @param resp The response to send
+	 * @throws IOException If an error occurred while sending
 	 */
 	public void sendResponse(HttpResponse resp) throws IOException {
 		sendResponse(resp, true);
@@ -356,13 +351,10 @@ public class HttpSession implements Runnable {
 
 	/**
 	 * Send a response
-	 * 
-	 * @param resp
-	 *            The response to send
-	 * @param close
-	 *            Whether to close the session
-	 * @throws IOException
-	 *             If an error occurred while sending
+	 *
+	 * @param resp The response to send
+	 * @param close Whether to close the session
+	 * @throws IOException If an error occurred while sending
 	 */
 	public void sendResponse(HttpResponse resp, boolean close) throws IOException {
 		StringBuilder header = new StringBuilder();
@@ -379,7 +371,7 @@ public class HttpSession implements Runnable {
 		// Copy in the headers
 		for (Entry<String, List<Object>> entry : resp.getHeaders().entrySet()) {
 			String headerName = HttpUtil.capitalizeHeader(entry.getKey());
-			for(Object o : entry.getValue()) {
+			for (Object o : entry.getValue()) {
 				header.append(headerName);
 				header.append(':').append(' ');
 				header.append(o);
@@ -433,11 +425,9 @@ public class HttpSession implements Runnable {
 
 	/**
 	 * Send an HttpStatus
-	 * 
-	 * @param status
-	 *            The status to send
-	 * @throws IOException
-	 *             If an error occurred while sending
+	 *
+	 * @param status The status to send
+	 * @throws IOException If an error occurred while sending
 	 */
 	public void sendError(HttpStatus status) throws IOException {
 		sendResponse(new HttpResponse(status, status.toString()));
@@ -445,22 +435,19 @@ public class HttpSession implements Runnable {
 
 	/**
 	 * Send an HttpStatus with the specified error message
-	 * 
-	 * @param status
-	 *            The status to send
-	 * @param message
-	 *            The error message to send
-	 * @throws IOException
-	 *             If an error occurred while sending
+	 *
+	 * @param status The status to send
+	 * @param message The error message to send
+	 * @throws IOException If an error occurred while sending
 	 */
 	public void sendError(HttpStatus status, String message) throws IOException {
 		sendResponse(new HttpResponse(status, status.toString() + ':' + message));
 	}
-	
+
 	/**
 	 * Get the remote address from this session
-	 * @return
-	 * 		The remote address
+	 *
+	 * @return The remote address
 	 */
 	public InetSocketAddress getRemoteAddress() {
 		return (InetSocketAddress) socket.getRemoteSocketAddress();

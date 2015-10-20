@@ -1,5 +1,10 @@
 package org.nikkii.embedhttp.handler;
 
+import org.nikkii.embedhttp.impl.HttpHeader;
+import org.nikkii.embedhttp.impl.HttpRequest;
+import org.nikkii.embedhttp.impl.HttpResponse;
+import org.nikkii.embedhttp.impl.HttpStatus;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -7,16 +12,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLConnection;
 import java.net.URLDecoder;
 
-import org.nikkii.embedhttp.impl.HttpHeader;
-import org.nikkii.embedhttp.impl.HttpRequest;
-import org.nikkii.embedhttp.impl.HttpResponse;
-import org.nikkii.embedhttp.impl.HttpStatus;
-
 /**
  * A RequestHandler to handle serving of simple static files
- * 
+ *
  * @author Nikki
- * 
  */
 public class HttpStaticFileHandler implements HttpRequestHandler {
 
@@ -32,9 +31,8 @@ public class HttpStaticFileHandler implements HttpRequestHandler {
 
 	/**
 	 * Construct a new static file server
-	 * 
-	 * @param documentRoot
-	 *            The document root
+	 *
+	 * @param documentRoot The document root
 	 */
 	public HttpStaticFileHandler(File documentRoot) {
 		this.documentRoot = documentRoot;

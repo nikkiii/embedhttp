@@ -18,8 +18,7 @@ public abstract class AsyncHttpRequestHandler implements HttpRequestHandler {
 	/**
 	 * Handle a request.
 	 *
-	 * @param request
-	 *            The request to handle
+	 * @param request The request to handle
 	 */
 	public abstract void handleAsyncRequest(HttpRequest request);
 }

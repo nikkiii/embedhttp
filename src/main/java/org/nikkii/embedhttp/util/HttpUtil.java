@@ -9,9 +9,8 @@ import java.util.StringTokenizer;
 public class HttpUtil {
 	/**
 	 * Parse POST data or GET data from the request URI
-	 * 
-	 * @param data
-	 *            The data string
+	 *
+	 * @param data The data string
 	 * @return A map containing the values
 	 */
 	public static Map<String, Object> parseData(String data) {
@@ -34,9 +33,8 @@ public class HttpUtil {
 
 	/**
 	 * Fixes capitalization on headers
-	 * 
-	 * @param header
-	 *            The header input
+	 *
+	 * @param header The header input
 	 * @return A header with all characters after '-' capitalized
 	 */
 	public static String capitalizeHeader(String header) {

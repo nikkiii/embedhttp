@@ -36,6 +36,7 @@ public class ContentTypeMap implements FileNameMap {
 
 	/**
 	 * Initialize a map from the specified input stream.
+	 *
 	 * @param input The input stream to read the types from.
 	 */
 	public ContentTypeMap(InputStream input) {
@@ -44,6 +45,7 @@ public class ContentTypeMap implements FileNameMap {
 
 	/**
 	 * Read and parse the type file.
+	 *
 	 * @param input The input stream to read the file from.
 	 */
 	private void initialize(InputStream input) {
