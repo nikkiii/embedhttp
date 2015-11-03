@@ -383,7 +383,7 @@ public class HttpSession implements Runnable {
 		output.write(header.toString().getBytes("UTF-8"));
 
 		// Ignore the body for headers and no content
-		if (request.getMethod() == HttpMethod.HEAD || resp.getStatus() == HttpStatus.NO_CONTENT) {
+		if (request == null || request.getMethod() == HttpMethod.HEAD || resp.getStatus() == HttpStatus.NO_CONTENT) {
 			if (resp.getResponse() instanceof InputStream) {
 				((InputStream) resp.getResponse()).close();
 			}
